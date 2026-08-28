@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
+#include <Player/D_PlayerState.h>
+#include "AbilitySystemComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -37,4 +39,31 @@ APlayerCharacter::APlayerCharacter()
     FollowCamera->bUsePawnControlRotation = false;
 
 
+}
+
+UAbilitySystemComponent* APlayerCharacter::GetAbilitySystemComponent() const
+{
+    AD_PlayerState* D_PlayerState = Cast<AD_PlayerState>(GetPlayerState());
+    if (!IsValid(D_PlayerState)) return nullptr;
+
+    return D_PlayerState->GetAbilitySystemComponent();
+}
+
+void APlayerCharacter::PossessedBy(AController* NewController)
+{
+    Super::PossessedBy(NewController);
+
+    if (!IsValid(GetAbilitySystemComponent())) return;
+
+    GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+
+}
+
+void APlayerCharacter::OnRep_PlayerState()
+{
+    Super::OnRep_PlayerState();
+
+    if (!IsValid(GetAbilitySystemComponent())) return;
+
+    GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 }
