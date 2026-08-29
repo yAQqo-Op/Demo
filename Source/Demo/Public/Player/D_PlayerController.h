@@ -9,6 +9,7 @@
 
 class UInputMappingContext;
 class UInputAction;
+struct FGameplayTag;
 struct FInputActionValue;
 
 UCLASS()
@@ -35,9 +36,18 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
 	UInputAction* IA_Primary;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
+	UInputAction* IA_Secondary;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
+	UInputAction* IA_Tertiary;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void StartJump();
 	void StopJump();
 	void Primary();
+	void Secondary();
+	void Tertiary();
+	void ActivateAbility(const FGameplayTag& AbilityTag) const;
 };
