@@ -9,8 +9,25 @@ namespace DTags
 {
 	namespace DAbilities
 	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(ActivateOnGinven);
+
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Primary);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Secondary);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Tertiary);
+
+	}
+
+	namespace Events
+	{
+		namespace Player
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(BasicAttack);
+		}
+
+		namespace Enemy
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(BasicAttack);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
+		}
 	}
 }

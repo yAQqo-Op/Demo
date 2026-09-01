@@ -1,0 +1,38 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "AbilitySystem/Abilities/D_GameplayAbility.h"
+#include "PlayerPrimary.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class DEMO_API UPlayerPrimary : public UD_GameplayAbility
+{
+	GENERATED_BODY()
+	
+public:
+
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	TArray<AActor*> HitBoxOverlapTest();
+
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	void SendHitReactEventToActors(const TArray<AActor*>& ActorsHit);
+
+private:
+
+	void DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults, const FVector& HitBoxLocation) const;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	float HitBoxRadius = 100.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	float HitBoxForwardOffset = 200.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	float HitBoxElevationOffset = 20.f;
+
+};

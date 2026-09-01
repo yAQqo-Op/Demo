@@ -30,9 +30,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input|Movement")
 	UInputAction* IA_Look;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Input|Movement")
-	UInputAction* IA_Jump;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
 	UInputAction* IA_Primary;
 
@@ -44,8 +41,6 @@ private:
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void StartJump();
-	void StopJump();
 	void Primary();
 	void Secondary();
 	void Tertiary();

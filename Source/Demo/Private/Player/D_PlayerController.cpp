@@ -25,8 +25,6 @@ void AD_PlayerController::SetupInputComponent()
 
     EnhancedInputComponent->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ThisClass::Move);
     EnhancedInputComponent->BindAction(IA_Look, ETriggerEvent::Triggered, this, &ThisClass::Look);
-    EnhancedInputComponent->BindAction(IA_Jump, ETriggerEvent::Started, this, &ThisClass::StartJump);
-    EnhancedInputComponent->BindAction(IA_Jump, ETriggerEvent::Completed, this, &ThisClass::StopJump);
 	
     EnhancedInputComponent->BindAction(IA_Primary, ETriggerEvent::Started, this, &ThisClass::Primary);
     EnhancedInputComponent->BindAction(IA_Secondary, ETriggerEvent::Started, this, &ThisClass::Secondary);
@@ -55,18 +53,6 @@ void AD_PlayerController::Look(const FInputActionValue& Value)
     
     AddYawInput(LookVector.X);
     AddPitchInput(LookVector.Y);
-}
-
-void AD_PlayerController::StartJump()
-{
-	if (!IsValid(GetCharacter())) return;
-	GetCharacter()->Jump();
-}
-
-void AD_PlayerController::StopJump()
-{
-	if (!IsValid(GetCharacter())) return;
-	GetCharacter()->StopJumping();
 }
 
 void AD_PlayerController::Primary()

@@ -11,6 +11,6 @@ void UD_GameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 
     if (GEngine)
     {
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Ability Activated!"));
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, FString::Printf(TEXT("%s Activated"), *GetName()));
     }
 }
