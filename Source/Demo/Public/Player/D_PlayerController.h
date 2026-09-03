@@ -9,6 +9,7 @@
 
 class UInputMappingContext;
 class UInputAction;
+class UD_PlayerHUDWidget;
 struct FGameplayTag;
 struct FInputActionValue;
 
@@ -17,8 +18,16 @@ class DEMO_API AD_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+public:
+	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* InPawn) override;
+
 protected:
+
 	virtual void SetupInputComponent() override;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<UD_PlayerHUDWidget> PlayerHUDWidgetClass;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -39,10 +48,14 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
 	UInputAction* IA_Tertiary;
 
+	UPROPERTY()
+	TObjectPtr<UD_PlayerHUDWidget> PlayerHUDWidget;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Primary();
 	void Secondary();
 	void Tertiary();
 	void ActivateAbility(const FGameplayTag& AbilityTag) const;
+	void CreateAndBindHUD();
 };

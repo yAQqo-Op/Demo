@@ -8,6 +8,29 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayTags/DTags.h"
 #include "AbilitySystemComponent.h"
+#include "UI/D_PlayerHUDWidget.h"
+#include "Characters/PlayerCharacter.h"
+
+void AD_PlayerController::BeginPlay()
+{
+    Super::BeginPlay();
+    CreateAndBindHUD();
+}
+
+void AD_PlayerController::OnPossess(APawn* InPawn)
+{
+    Super::OnPossess(InPawn);
+
+    // Re-bind HUD when possessing a new pawn (e.g. after respawn)
+    if (PlayerHUDWidget)
+    {
+        APlayerCharacter* PlayerChar = Cast<APlayerCharacter>(InPawn);
+        if (PlayerChar)
+        {
+            PlayerHUDWidget->BindToPlayer(PlayerChar);
+        }
+    }
+}
 
 void AD_PlayerController::SetupInputComponent()
 {
@@ -76,4 +99,25 @@ void AD_PlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
     if (!IsValid(ASC)) return;
 
     ASC->TryActivateAbilitiesByTag(AbilityTag.GetSingleTagContainer());
+}
+
+void AD_PlayerController::CreateAndBindHUD()
+{
+    if (!PlayerHUDWidgetClass) return;
+
+    PlayerHUDWidget = CreateWidget<UD_PlayerHUDWidget>(this, PlayerHUDWidgetClass);
+    if (!PlayerHUDWidget) return;
+
+    PlayerHUDWidget->AddToViewport();
+
+    APlayerCharacter* PlayerChar = Cast<APlayerCharacter>(GetPawn());
+    if (PlayerChar)
+    {
+        PlayerHUDWidget->BindToPlayer(PlayerChar);
+    }
+    else
+    {
+        // No pawn yet, keep hidden until OnPossess
+        PlayerHUDWidget->SetVisibility(ESlateVisibility::Hidden);
+    }
 }
