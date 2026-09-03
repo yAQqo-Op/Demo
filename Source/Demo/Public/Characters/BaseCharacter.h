@@ -9,6 +9,7 @@
 #include "BaseCharacter.generated.h"
 
 class UGameplayAbility;
+class UGameplayEffect;
 
 UCLASS(Abstract)
 class DEMO_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -22,10 +23,15 @@ public:
 
 protected:
 	void GiveStartupAbilities();
+	void InitializeAttributes() const;
 
 private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect> InitializeAttributesEffect;
+
 
 };

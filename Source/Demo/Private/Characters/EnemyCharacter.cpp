@@ -3,6 +3,7 @@
 
 #include "Characters/EnemyCharacter.h"
 #include "AbilitySystem/D_AbilitySystemComponent.h"
+#include "AbilitySystem/D_AttributeSet.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -11,6 +12,9 @@ AEnemyCharacter::AEnemyCharacter()
 	AbilitySystemComponent = CreateDefaultSubobject<UD_AbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+	AttributeSet = CreateDefaultSubobject<UD_AttributeSet>("AttributeSet");
+
 }
 
 UAbilitySystemComponent* AEnemyCharacter::GetAbilitySystemComponent() const
@@ -29,5 +33,5 @@ void AEnemyCharacter::BeginPlay()
 	if (!HasAuthority()) return;
 
 	GiveStartupAbilities();
-
+	InitializeAttributes();
 }

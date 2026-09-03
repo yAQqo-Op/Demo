@@ -8,10 +8,8 @@
 #include "EnemyCharacter.generated.h"
 
 class UAbilitySystemComponent;
+class UAttributeSet;
 
-/**
- * 
- */
 UCLASS()
 class DEMO_API AEnemyCharacter : public ABaseCharacter
 {
@@ -27,5 +25,8 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 
 };

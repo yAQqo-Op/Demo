@@ -9,6 +9,7 @@
 #include "D_PlayerState.generated.h"
 
 class UAbilitySystemComponent;
+class UAttributeSet;
 
 UCLASS()
 class DEMO_API AD_PlayerState : public APlayerState, public IAbilitySystemInterface
@@ -23,4 +24,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 };
