@@ -5,6 +5,11 @@
 #include "AbilitySystemComponent.h"
 #include "Net/UnrealNetwork.h"
 
+namespace Tags
+{
+	const FName Player = FName("Player");
+}
+
 // Sets default values
 ABaseCharacter::ABaseCharacter()
 {

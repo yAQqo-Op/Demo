@@ -8,6 +8,11 @@
 
 #include "BaseCharacter.generated.h"
 
+namespace Tags
+{
+	extern DEMO_API const FName Player;
+}
+
 class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
