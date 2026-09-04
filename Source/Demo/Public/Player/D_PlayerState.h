@@ -17,9 +17,11 @@ class DEMO_API AD_PlayerState : public APlayerState, public IAbilitySystemInterf
 	GENERATED_BODY()
 	
 public:
+
 	AD_PlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	
+	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
 private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")

@@ -6,8 +6,10 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
-#include <Player/D_PlayerState.h>
+#include "Player/D_PlayerState.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/D_AttributeSet.h"
+
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -49,6 +51,14 @@ UAbilitySystemComponent* APlayerCharacter::GetAbilitySystemComponent() const
     return D_PlayerState->GetAbilitySystemComponent();
 }
 
+UAttributeSet* APlayerCharacter::GetAttributeSet() const
+{
+    AD_PlayerState* D_PlayerState = Cast<AD_PlayerState>(GetPlayerState());
+    if (!IsValid(D_PlayerState)) return nullptr;
+
+    return D_PlayerState->GetAttributeSet();
+}
+
 void APlayerCharacter::PossessedBy(AController* NewController)
 {
     Super::PossessedBy(NewController);
@@ -58,6 +68,13 @@ void APlayerCharacter::PossessedBy(AController* NewController)
     GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
     GiveStartupAbilities();
     InitializeAttributes();
+
+    UD_AttributeSet* D_AttributeSet = Cast<UD_AttributeSet>(GetAttributeSet());
+    if (!IsValid(D_AttributeSet)) return;
+
+    GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(D_AttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
+
+
 }
 
 void APlayerCharacter::OnRep_PlayerState()
@@ -67,4 +84,10 @@ void APlayerCharacter::OnRep_PlayerState()
     if (!IsValid(GetAbilitySystemComponent())) return;
 
     GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+
+    UD_AttributeSet* D_AttributeSet = Cast<UD_AttributeSet>(GetAttributeSet());
+    if (!IsValid(D_AttributeSet)) return;
+
+    GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(D_AttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
+
 }

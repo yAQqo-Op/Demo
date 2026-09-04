@@ -10,6 +10,7 @@ namespace DTags
 	namespace DAbilities
 	{
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(ActivateOnGinven);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Death);
 
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Primary);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Secondary);
@@ -29,5 +30,10 @@ namespace DTags
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(BasicAttack);
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
 		}
+	}
+
+	namespace Status
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dead);
 	}
 }

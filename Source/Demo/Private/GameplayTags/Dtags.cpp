@@ -8,6 +8,7 @@ namespace DTags
 	namespace DAbilities
 	{
 		UE_DEFINE_GAMEPLAY_TAG(ActivateOnGinven, "DTags.DAbilities.ActivateOnGinven");
+		UE_DEFINE_GAMEPLAY_TAG(Death, "DTags.DAbilities.Death");
 
 		UE_DEFINE_GAMEPLAY_TAG(Primary, "DTags.DAbilities.Primary");
 		UE_DEFINE_GAMEPLAY_TAG(Secondary, "DTags.DAbilities.Secondary");
@@ -29,4 +30,10 @@ namespace DTags
 			UE_DEFINE_GAMEPLAY_TAG(HitReact, "DTags.Events.Enemy.HitReact");
 		}
 	}
+
+	namespace Status
+	{
+		UE_DEFINE_GAMEPLAY_TAG(Dead, "DTags.Status.Dead");
+	}
+
 }

@@ -7,7 +7,6 @@
 #include "AbilitySystem/D_AttributeSet.h"
 #include "AbilitySystemComponent.h"
 #include "Components/ProgressBar.h"
-#include "Components/TextBlock.h"
 
 void UD_PlayerHUDWidget::NativeConstruct()
 {
@@ -22,66 +21,41 @@ void UD_PlayerHUDWidget::NativeDestruct()
 	Super::NativeDestruct();
 }
 
-const UD_AttributeSet* UD_PlayerHUDWidget::GetPlayerAttributeSet() const
-{
-	if (!CurrentPlayer) return nullptr;
-
-	UAbilitySystemComponent* ASC = CurrentPlayer->GetAbilitySystemComponent();
-	if (!ASC) return nullptr;
-
-	return ASC->GetSet<UD_AttributeSet>();
-}
-
 void UD_PlayerHUDWidget::BindToPlayer(APlayerCharacter* Player)
 {
-	// 1. Clear any existing binding first
 	UnbindFromPlayer();
 
-	// 2. If player is invalid, hide UI
-	if (!Player)
+	if (!Player || !IsValid(Player))
 	{
 		SetVisibility(ESlateVisibility::Hidden);
 		return;
 	}
 
-	// 3. Store player reference
 	CurrentPlayer = Player;
 
-	// 4. Get GAS component
-	UAbilitySystemComponent* ASC = Player->GetAbilitySystemComponent();
+	UAbilitySystemComponent* ASC = CurrentPlayer->GetAbilitySystemComponent();
 	if (!ASC)
 	{
 		SetVisibility(ESlateVisibility::Hidden);
 		return;
 	}
 
-	// 5. Get attribute set
-	CachedAttributeSet = ASC->GetSet<UD_AttributeSet>();
-	if (!CachedAttributeSet)
+	UD_AttributeSet* AttrSet = Cast<UD_AttributeSet>(CurrentPlayer->GetAttributeSet());
+	if (!AttrSet)
 	{
 		SetVisibility(ESlateVisibility::Hidden);
 		return;
 	}
 
-	// 6. Bind to attribute change delegates using Lambda to unpack FOnAttributeChangeData
 	HealthDelegateHandle = ASC->GetGameplayAttributeValueChangeDelegate(
 		UD_AttributeSet::GetHealthAttribute()
-	).AddLambda([this](const FOnAttributeChangeData& Data)
-		{
-			OnHealthChanged(Data.NewValue, Data.OldValue);
-		});
+	).AddUObject(this, &UD_PlayerHUDWidget::OnHealthChanged);
 
 	ManaDelegateHandle = ASC->GetGameplayAttributeValueChangeDelegate(
 		UD_AttributeSet::GetManaAttribute()
-	).AddLambda([this](const FOnAttributeChangeData& Data)
-		{
-			OnManaChanged(Data.NewValue, Data.OldValue);
-		});
+	).AddUObject(this, &UD_PlayerHUDWidget::OnManaChanged);
 
-	// 7. Initialize all UI displays
 	RefreshAllUI();
-
-	// 8. Show UI
 	SetVisibility(ESlateVisibility::Visible);
 
 	UE_LOG(LogTemp, Log, TEXT("Player HUD bound to %s"), *Player->GetName());
@@ -89,7 +63,11 @@ void UD_PlayerHUDWidget::BindToPlayer(APlayerCharacter* Player)
 
 void UD_PlayerHUDWidget::UnbindFromPlayer()
 {
-	if (!CurrentPlayer) return;
+	if (!CurrentPlayer)
+	{
+		SetVisibility(ESlateVisibility::Hidden);
+		return;
+	}
 
 	UAbilitySystemComponent* ASC = CurrentPlayer->GetAbilitySystemComponent();
 	if (ASC)
@@ -109,52 +87,59 @@ void UD_PlayerHUDWidget::UnbindFromPlayer()
 	}
 
 	CurrentPlayer = nullptr;
-	CachedAttributeSet = nullptr;
 	SetVisibility(ESlateVisibility::Hidden);
 }
 
-// ========== Attribute Change Handlers (unpacked from FOnAttributeChangeData) ==========
-
-void UD_PlayerHUDWidget::OnHealthChanged(float NewHealth, float OldHealth)
+void UD_PlayerHUDWidget::OnHealthChanged(const FOnAttributeChangeData& Data)
 {
-	if (CachedAttributeSet)
+	if (CurrentPlayer)
 	{
-		UpdateHealth(NewHealth, CachedAttributeSet->GetMaxHealth());
+		UD_AttributeSet* AttrSet = Cast<UD_AttributeSet>(CurrentPlayer->GetAttributeSet());
+		if (AttrSet)
+		{
+			UpdateHealth(Data.NewValue, AttrSet->GetMaxHealth());
+		}
 	}
 }
 
-void UD_PlayerHUDWidget::OnManaChanged(float NewMana, float OldMana)
+void UD_PlayerHUDWidget::OnManaChanged(const FOnAttributeChangeData& Data)
 {
-	if (CachedAttributeSet)
+	if (CurrentPlayer)
 	{
-		UpdateMana(NewMana, CachedAttributeSet->GetMaxMana());
+		UD_AttributeSet* AttrSet = Cast<UD_AttributeSet>(CurrentPlayer->GetAttributeSet());
+		if (AttrSet)
+		{
+			UpdateMana(Data.NewValue, AttrSet->GetMaxMana());
+		}
 	}
 }
-
-// ========== UI Update Functions ==========
 
 void UD_PlayerHUDWidget::UpdateHealth(float Current, float Max)
 {
 	if (HealthBar)
 	{
-		HealthBar->SetPercent(Max > 0.0f ? Current / Max : 0.0f);
+		float Percent = (Max > 0.0f) ? (Current / Max) : 0.0f;
+		HealthBar->SetPercent(FMath::Clamp(Percent, 0.0f, 1.0f));
 	}
-	
 }
 
 void UD_PlayerHUDWidget::UpdateMana(float Current, float Max)
 {
 	if (ManaBar)
 	{
-		ManaBar->SetPercent(Max > 0.0f ? Current / Max : 0.0f);
+		float Percent = (Max > 0.0f) ? (Current / Max) : 0.0f;
+		ManaBar->SetPercent(FMath::Clamp(Percent, 0.0f, 1.0f));
 	}
-	
 }
+
 
 void UD_PlayerHUDWidget::RefreshAllUI()
 {
-	if (!CurrentPlayer || !CachedAttributeSet) return;
+	if (!CurrentPlayer) return;
 
-	UpdateHealth(CachedAttributeSet->GetHealth(), CachedAttributeSet->GetMaxHealth());
-	UpdateMana(CachedAttributeSet->GetMana(), CachedAttributeSet->GetMaxMana());
+	UD_AttributeSet* AttrSet = Cast<UD_AttributeSet>(CurrentPlayer->GetAttributeSet());
+	if (!AttrSet) return;
+
+	UpdateHealth(AttrSet->GetHealth(), AttrSet->GetMaxHealth());
+	UpdateMana(AttrSet->GetMana(), AttrSet->GetMaxMana());
 }
