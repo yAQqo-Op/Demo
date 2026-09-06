@@ -4,6 +4,7 @@
 #include "Characters/EnemyCharacter.h"
 #include "AbilitySystem/D_AbilitySystemComponent.h"
 #include "AbilitySystem/D_AttributeSet.h"
+#include "AIController.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -46,3 +47,4 @@ void AEnemyCharacter::BeginPlay()
 	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(D_AttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 
 }
+

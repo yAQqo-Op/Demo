@@ -42,20 +42,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
 	UInputAction* IA_Primary;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
-	UInputAction* IA_Secondary;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
-	UInputAction* IA_Tertiary;
-
 	UPROPERTY()
 	TObjectPtr<UD_PlayerHUDWidget> PlayerHUDWidget;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Primary();
-	void Secondary();
-	void Tertiary();
 	void ActivateAbility(const FGameplayTag& AbilityTag) const;
 	void CreateAndBindHUD();
 };

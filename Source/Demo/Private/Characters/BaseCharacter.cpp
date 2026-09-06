@@ -62,11 +62,6 @@ void ABaseCharacter::OnHealthChanged(const FOnAttributeChangeData& AttributeChan
 void ABaseCharacter::HandleDeath()
 {
 	bAlive = false;
-
-	if (IsValid(GEngine))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("%s has died!"), *GetName()));
-	}
 }
 
 void ABaseCharacter::HandleResPawn()

@@ -11,8 +11,11 @@ namespace DTags
 		UE_DEFINE_GAMEPLAY_TAG(Death, "DTags.DAbilities.Death");
 
 		UE_DEFINE_GAMEPLAY_TAG(Primary, "DTags.DAbilities.Primary");
-		UE_DEFINE_GAMEPLAY_TAG(Secondary, "DTags.DAbilities.Secondary");
-		UE_DEFINE_GAMEPLAY_TAG(Tertiary, "DTags.DAbilities.Tertiary");
+
+		namespace Enemy
+		{
+			UE_DEFINE_GAMEPLAY_TAG(BasicAttack, "DTags.DAbilities.Enemy.BasicAttack");
+		}
 
 	}
 	

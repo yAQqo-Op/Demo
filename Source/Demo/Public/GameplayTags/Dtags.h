@@ -13,9 +13,11 @@ namespace DTags
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Death);
 
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Primary);
-		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Secondary);
-		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Tertiary);
 
+		namespace Enemy
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(BasicAttack);
+		}
 	}
 
 	namespace Events

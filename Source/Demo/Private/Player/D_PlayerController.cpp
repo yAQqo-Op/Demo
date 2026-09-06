@@ -50,8 +50,6 @@ void AD_PlayerController::SetupInputComponent()
     EnhancedInputComponent->BindAction(IA_Look, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	
     EnhancedInputComponent->BindAction(IA_Primary, ETriggerEvent::Started, this, &ThisClass::Primary);
-    EnhancedInputComponent->BindAction(IA_Secondary, ETriggerEvent::Started, this, &ThisClass::Secondary);
-    EnhancedInputComponent->BindAction(IA_Tertiary, ETriggerEvent::Started, this, &ThisClass::Tertiary);
 
 }
 
@@ -81,16 +79,6 @@ void AD_PlayerController::Look(const FInputActionValue& Value)
 void AD_PlayerController::Primary()
 {
     ActivateAbility(DTags::DAbilities::Primary);
-}
-
-void AD_PlayerController::Secondary()
-{
-    ActivateAbility(DTags::DAbilities::Secondary);
-}
-
-void AD_PlayerController::Tertiary()
-{
-    ActivateAbility(DTags::DAbilities::Tertiary);
 }
 
 void AD_PlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
