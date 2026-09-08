@@ -39,6 +39,14 @@ namespace DTags
 	namespace Status
 	{
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dead);
+
+		namespace Combo
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack1);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack2);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack3);
+		}
+
 	}
 
 	namespace AttackType
@@ -53,5 +61,10 @@ namespace DTags
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(LightAttack);
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HeavyAttack);
 		}
+	}
+
+	namespace Window
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Combo);
 	}
 }

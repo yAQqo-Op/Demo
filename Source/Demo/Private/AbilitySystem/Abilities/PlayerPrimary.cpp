@@ -33,7 +33,6 @@ TArray<AActor*> UPlayerPrimary::HitBoxOverlapTest()
 		ActorsHit.AddUnique(Result.GetActor());
 	}
 
-	DrawHitBoxOverlapDebugs(OverlapResults, HitBoxLocation);
 	
 	return ActorsHit;
 }

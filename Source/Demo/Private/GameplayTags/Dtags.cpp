@@ -39,6 +39,13 @@ namespace DTags
 	namespace Status
 	{
 		UE_DEFINE_GAMEPLAY_TAG(Dead, "DTags.Status.Dead");
+
+		namespace Combo
+		{
+			UE_DEFINE_GAMEPLAY_TAG(Attack1, "DTags.Status.Combo.Attack1");
+			UE_DEFINE_GAMEPLAY_TAG(Attack2, "DTags.Status.Combo.Attack2");
+			UE_DEFINE_GAMEPLAY_TAG(Attack3, "DTags.Status.Combo.Attack3");
+		}
 	}
 
 	namespace AttackType
@@ -53,5 +60,10 @@ namespace DTags
 			UE_DEFINE_GAMEPLAY_TAG(LightAttack, "DTags.AttackType.Enemy.LightAttack");
 			UE_DEFINE_GAMEPLAY_TAG(HeavyAttack, "DTags.AttackType.Enemy.HeavyAttack");
 		}
+	}
+
+	namespace Window
+	{
+		UE_DEFINE_GAMEPLAY_TAG(Combo, "DTags.Window.Combo");
 	}
 }
