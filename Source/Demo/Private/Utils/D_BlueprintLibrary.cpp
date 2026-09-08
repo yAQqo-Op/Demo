@@ -4,6 +4,9 @@
 #include "Utils/D_BlueprintLibrary.h"
 #include "Characters/BaseCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "AbilitySystem/D_AttributeSet.h"
+#include "GameplayTags/Dtags.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 EHitDirection UD_BlueprintLibrary::GetHitDirection(const FVector& TargetForward, const FVector& ToInstigator)
 {
@@ -37,32 +40,26 @@ FName UD_BlueprintLibrary::GetHitDirectionName(const EHitDirection& HitDirection
 	}
 }
 
-FClosestActorWithTagResult UD_BlueprintLibrary::FindClosestActorWithTag(const UObject* WorldContextObject, const FVector& Origin, const FName& Tag)
+void UD_BlueprintLibrary::SendDamageEventToPlayer(AActor* Target, const TSubclassOf<UGameplayEffect>& DamageEffect, const FGameplayEventData& Payload, const FGameplayTag& DataTag, float Damage)
 {
-	TArray<AActor*> ActorsWithTag;
-	UGameplayStatics::GetAllActorsWithTag(WorldContextObject, Tag, ActorsWithTag);
+	ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(Target);
+	if (!IsValid(PlayerCharacter)) return;
+	if (!PlayerCharacter->IsAlive()) return;
 
-	float ClosestDistance = TNumericLimits<float>::Max();
-	AActor* ClosestActor = nullptr;
+	UD_AttributeSet* AttributeSet = Cast<UD_AttributeSet>(PlayerCharacter->GetAttributeSet());
+	if (!IsValid(AttributeSet)) return;
 
-	for (AActor* Actor : ActorsWithTag)
-	{
-		if (!IsValid(Actor)) continue;
-		ABaseCharacter* BaseCharacter = Cast<ABaseCharacter>(Actor);
-		if (!IsValid(BaseCharacter) || BaseCharacter->IsAlive()) continue;
+	const bool bLethal = AttributeSet->GetHealth() - Damage <= 0.f;
+	const FGameplayTag EventTag = bLethal ? DTags::Events::Player::Death : DTags::Events::Player::HitReact;
 
-		const float Distance = FVector::Dist(Origin, Actor->GetActorLocation());
-		if (Distance < ClosestDistance)
-		{
-			ClosestDistance = Distance;
-			ClosestActor = Actor;
-		}
-	}
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(PlayerCharacter, EventTag, Payload);
 
-	FClosestActorWithTagResult Result;
-	Result.Actor = ClosestActor;
-	Result.Distance = ClosestDistance;
+	UAbilitySystemComponent* TargetASC = PlayerCharacter->GetAbilitySystemComponent();
+	if (!IsValid(TargetASC)) return;
 
-	return Result;
+	FGameplayEffectContextHandle ContextHandle = TargetASC->MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = TargetASC->MakeOutgoingSpec(DamageEffect, 1.f, ContextHandle);
 
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DataTag, -Damage);
+	TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }

@@ -25,6 +25,8 @@ namespace DTags
 		namespace Player
 		{
 			UE_DEFINE_GAMEPLAY_TAG(BasicAttack, "DTags.Events.Player.BasicAttack");
+			UE_DEFINE_GAMEPLAY_TAG(HitReact, "DTags.Events.Player.HitReact");
+			UE_DEFINE_GAMEPLAY_TAG(Death, "DTags.Events.Player.Death");
 		}
 
 		namespace Enemy
@@ -39,4 +41,17 @@ namespace DTags
 		UE_DEFINE_GAMEPLAY_TAG(Dead, "DTags.Status.Dead");
 	}
 
+	namespace AttackType
+	{
+		namespace Player
+		{
+
+		}
+
+		namespace Enemy
+		{
+			UE_DEFINE_GAMEPLAY_TAG(LightAttack, "DTags.AttackType.Enemy.LightAttack");
+			UE_DEFINE_GAMEPLAY_TAG(HeavyAttack, "DTags.AttackType.Enemy.HeavyAttack");
+		}
+	}
 }

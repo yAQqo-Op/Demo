@@ -16,17 +16,11 @@ enum class EHitDirection : uint8
 	Back
 };
 
-USTRUCT(BlueprintType)
-struct FClosestActorWithTagResult
-{
-	GENERATED_BODY()
-
-	UPROPERTY(BlueprintReadWrite)
-	TWeakObjectPtr<AActor> Actor;
-
-	UPROPERTY(BlueprintReadWrite)
-	float Distance{ 0.f };
-};
+class AActor;
+class UAbilitySystemComponent;
+class UGameplayEffect;
+struct FGameplayEventData;
+struct FGameplayTag;
 
 UCLASS()
 class DEMO_API UD_BlueprintLibrary : public UBlueprintFunctionLibrary
@@ -42,5 +36,6 @@ public:
 	static FName GetHitDirectionName(const EHitDirection& HitDirection);
 
 	UFUNCTION(BlueprintCallable)
-	static FClosestActorWithTagResult FindClosestActorWithTag(const UObject* WorldContextObject, const FVector& Origin, const FName& Tag);
+	static void SendDamageEventToPlayer(AActor* Target, const TSubclassOf<UGameplayEffect>& DamageEffect, const FGameplayEventData& Payload, const FGameplayTag& DataTag, float Damage);
+
 };

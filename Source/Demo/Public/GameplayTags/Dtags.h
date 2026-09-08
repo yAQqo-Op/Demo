@@ -25,6 +25,8 @@ namespace DTags
 		namespace Player
 		{
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(BasicAttack);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Death);
 		}
 
 		namespace Enemy
@@ -37,5 +39,19 @@ namespace DTags
 	namespace Status
 	{
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dead);
+	}
+
+	namespace AttackType
+	{
+		namespace Player
+		{
+
+		}
+
+		namespace Enemy
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(LightAttack);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HeavyAttack);
+		}
 	}
 }

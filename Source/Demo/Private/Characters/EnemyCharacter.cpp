@@ -16,6 +16,8 @@ AEnemyCharacter::AEnemyCharacter()
 
 	AttributeSet = CreateDefaultSubobject<UD_AttributeSet>("AttributeSet");
 
+	Tags.Add(Tags::Enemy);
+
 }
 
 UAbilitySystemComponent* AEnemyCharacter::GetAbilitySystemComponent() const

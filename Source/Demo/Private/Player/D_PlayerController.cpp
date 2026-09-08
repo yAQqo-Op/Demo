@@ -10,6 +10,7 @@
 #include "AbilitySystemComponent.h"
 #include "UI/D_PlayerHUDWidget.h"
 #include "Characters/PlayerCharacter.h"
+#include "Utils/D_BlueprintLibrary.h"
 
 void AD_PlayerController::BeginPlay()
 {
@@ -56,6 +57,7 @@ void AD_PlayerController::SetupInputComponent()
 void AD_PlayerController::Move(const FInputActionValue& Value)
 {
     if (!IsValid(GetPawn())) return;
+    if (!IsAlive()) return;
 
     const FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -70,6 +72,8 @@ void AD_PlayerController::Move(const FInputActionValue& Value)
 
 void AD_PlayerController::Look(const FInputActionValue& Value)
 {
+    if (!IsAlive()) return;
+
     const FVector2D LookVector = Value.Get<FVector2D>();
     
     AddYawInput(LookVector.X);
@@ -83,6 +87,8 @@ void AD_PlayerController::Primary()
 
 void AD_PlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
 {
+    if (!IsAlive()) return;
+
     UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
     if (!IsValid(ASC)) return;
 
@@ -109,3 +115,11 @@ void AD_PlayerController::CreateAndBindHUD()
         PlayerHUDWidget->SetVisibility(ESlateVisibility::Hidden);
     }
 }
+
+bool AD_PlayerController::IsAlive() const
+{
+    ABaseCharacter* BaseCharacter = Cast<ABaseCharacter>(GetPawn());
+    if (!IsValid(BaseCharacter)) return false;
+    return BaseCharacter->IsAlive();
+}
+

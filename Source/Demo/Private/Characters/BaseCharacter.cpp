@@ -8,6 +8,7 @@
 namespace Tags
 {
 	const FName Player = FName("Player");
+	const FName Enemy = FName("Enemy");
 }
 
 // Sets default values
@@ -77,5 +78,3 @@ void ABaseCharacter::ResetAttributes()
 	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(ResetAttributesEffect, 1.f, ContextHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }
-
-

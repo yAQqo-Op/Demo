@@ -11,6 +11,7 @@
 namespace Tags
 {
 	extern DEMO_API const FName Player;
+	extern DEMO_API const FName Enemy;
 }
 
 class UGameplayAbility;

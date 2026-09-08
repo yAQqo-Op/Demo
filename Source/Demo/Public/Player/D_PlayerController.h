@@ -49,5 +49,7 @@ private:
 	void Look(const FInputActionValue& Value);
 	void Primary();
 	void ActivateAbility(const FGameplayTag& AbilityTag) const;
+	bool IsAlive() const;
+
 	void CreateAndBindHUD();
 };
