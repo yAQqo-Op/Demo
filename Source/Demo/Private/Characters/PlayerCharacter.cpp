@@ -10,7 +10,6 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/D_AttributeSet.h"
 
-
 APlayerCharacter::APlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -69,6 +68,8 @@ void APlayerCharacter::PossessedBy(AController* NewController)
     GiveStartupAbilities();
     InitializeAttributes();
 
+    StartManaDrain();
+
     UD_AttributeSet* D_AttributeSet = Cast<UD_AttributeSet>(GetAttributeSet());
     if (!IsValid(D_AttributeSet)) return;
 
@@ -84,6 +85,12 @@ void APlayerCharacter::OnRep_PlayerState()
     if (!IsValid(GetAbilitySystemComponent())) return;
 
     GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+
+    if (!IsManaDraining())
+    {
+        StartManaDrain();
+    }
+
 
     UD_AttributeSet* D_AttributeSet = Cast<UD_AttributeSet>(GetAttributeSet());
     if (!IsValid(D_AttributeSet)) return;

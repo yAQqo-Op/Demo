@@ -10,9 +10,9 @@ namespace DTags
 	namespace DAbilities
 	{
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(ActivateOnGinven);
-		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Death);
-
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Primary);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Death);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dodge);
 
 		namespace Enemy
 		{
@@ -39,12 +39,15 @@ namespace DTags
 	namespace Status
 	{
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dead);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dodging);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Burn);
 
 		namespace Combo
 		{
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack1);
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack2);
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack3);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack4);
 		}
 
 	}
@@ -53,7 +56,8 @@ namespace DTags
 	{
 		namespace Player
 		{
-
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(LightAttack);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HeavyAttack);
 		}
 
 		namespace Enemy

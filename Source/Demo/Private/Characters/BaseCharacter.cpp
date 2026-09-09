@@ -4,6 +4,8 @@
 #include "Characters/BaseCharacter.h"
 #include "AbilitySystemComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "GameplayEffect.h"
+#include "AbilitySystem/D_AttributeSet.h"
 
 namespace Tags
 {
@@ -63,6 +65,7 @@ void ABaseCharacter::OnHealthChanged(const FOnAttributeChangeData& AttributeChan
 void ABaseCharacter::HandleDeath()
 {
 	bAlive = false;
+	StopManaDrain();
 }
 
 void ABaseCharacter::HandleResPawn()
@@ -77,4 +80,37 @@ void ABaseCharacter::ResetAttributes()
 	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
 	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(ResetAttributesEffect, 1.f, ContextHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
+void ABaseCharacter::StartManaDrain()
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!IsValid(ASC)) return;
+
+	if (!ManaDrainEffectClass) return;
+
+	if (ManaDrainEffectHandle.IsValid())
+	{
+		ASC->RemoveActiveGameplayEffect(ManaDrainEffectHandle);
+		ManaDrainEffectHandle.Invalidate();
+	}
+
+	ManaDrainEffectHandle = ASC->ApplyGameplayEffectToSelf(
+		ManaDrainEffectClass->GetDefaultObject<UGameplayEffect>(),
+		1.0f,
+		ASC->MakeEffectContext()
+	);
+
+}
+
+void ABaseCharacter::StopManaDrain()
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!IsValid(ASC)) return;
+
+	if (ManaDrainEffectHandle.IsValid())
+	{
+		ASC->RemoveActiveGameplayEffect(ManaDrainEffectHandle);
+		ManaDrainEffectHandle.Invalidate();
+	}
 }

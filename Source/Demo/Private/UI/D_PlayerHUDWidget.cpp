@@ -58,7 +58,6 @@ void UD_PlayerHUDWidget::BindToPlayer(APlayerCharacter* Player)
 	RefreshAllUI();
 	SetVisibility(ESlateVisibility::Visible);
 
-	UE_LOG(LogTemp, Log, TEXT("Player HUD bound to %s"), *Player->GetName());
 }
 
 void UD_PlayerHUDWidget::UnbindFromPlayer()

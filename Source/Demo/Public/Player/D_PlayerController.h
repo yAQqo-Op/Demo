@@ -42,12 +42,16 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
 	UInputAction* IA_Primary;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
+	UInputAction* IA_Dodge;
+
 	UPROPERTY()
 	TObjectPtr<UD_PlayerHUDWidget> PlayerHUDWidget;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Primary();
+	void Dodge();
 	void ActivateAbility(const FGameplayTag& AbilityTag) const;
 	bool IsAlive() const;
 

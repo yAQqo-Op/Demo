@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "ActiveGameplayEffectHandle.h"
 
 #include "BaseCharacter.generated.h"
 
@@ -40,6 +41,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	void ResetAttributes();
 
+	UFUNCTION(BlueprintCallable, Category = "Mana")
+	virtual void StartManaDrain();
+
+	UFUNCTION(BlueprintCallable, Category = "Mana")
+	virtual void StopManaDrain();
+
 protected:
 	
 	void GiveStartupAbilities();
@@ -47,6 +54,15 @@ protected:
 
 	void OnHealthChanged(const FOnAttributeChangeData& AttributeChangeData);
 	virtual void HandleDeath();
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mana")
+	TSubclassOf<UGameplayEffect> ManaDrainEffectClass;
+
+	UPROPERTY()
+	FActiveGameplayEffectHandle ManaDrainEffectHandle;
+
+	UFUNCTION(BlueprintCallable, Category = "Mana")
+	bool IsManaDraining() const { return ManaDrainEffectHandle.IsValid(); }
 
 private:
 
@@ -58,6 +74,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	TSubclassOf<UGameplayEffect> ResetAttributesEffect;
+
+
 
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Replicated)
 	bool bAlive = true;
