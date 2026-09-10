@@ -4,6 +4,8 @@
 #include "AbilitySystem/D_AttributeSet.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
+#include "AbilitySystem/D_AbilitySystemComponent.h"
+#include "GameplayTags/Dtags.h"
 
 void UD_AttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -34,10 +36,24 @@ void UD_AttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 {
 	Super::PostGameplayEffectExecute(Data);
 
-	if (Data.EvaluatedData.Attribute == GetManaAttribute())
-	{
-		SetMana(FMath::Clamp(GetMana(), 0.0f, GetMaxMana()));
-	}
+    if (Data.EvaluatedData.Attribute == GetManaAttribute())
+    {
+        SetMana(FMath::Clamp(GetMana(), 0.0f, GetMaxMana()));
+
+        UD_AbilitySystemComponent* ASC = Cast<UD_AbilitySystemComponent>(
+            Data.Target.AbilityActorInfo->AbilitySystemComponent.Get()
+        );
+        if (!ASC) return;
+
+        if (GetMana() >= 70.0f)
+        {
+            ASC->SetLooseGameplayTagCount(DTags::Status::Burn, 1);
+        }
+        else
+        {
+            ASC->SetLooseGameplayTagCount(DTags::Status::Burn, 0);
+        }
+    }
 }
 
 
