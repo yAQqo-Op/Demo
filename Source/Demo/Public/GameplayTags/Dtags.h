@@ -17,6 +17,10 @@ namespace DTags
 		namespace Enemy
 		{
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(BasicAttack);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack_a);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack_bf);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack_bl);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack_c);
 		}
 	}
 

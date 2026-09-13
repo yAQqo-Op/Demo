@@ -15,6 +15,10 @@ namespace DTags
 		namespace Enemy
 		{
 			UE_DEFINE_GAMEPLAY_TAG(BasicAttack, "DTags.DAbilities.Enemy.BasicAttack");
+			UE_DEFINE_GAMEPLAY_TAG(Attack_a, "DTags.DAbilities.Enemy.Attack_a");
+			UE_DEFINE_GAMEPLAY_TAG(Attack_bf, "DTags.DAbilities.Enemy.Attack_bf");
+			UE_DEFINE_GAMEPLAY_TAG(Attack_bl, "DTags.DAbilities.Enemy.Attack_bl");
+			UE_DEFINE_GAMEPLAY_TAG(Attack_c, "DTags.DAbilities.Enemy.Attack_c");
 		}
 
 	}
